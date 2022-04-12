@@ -100,7 +100,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [GitHub](https://github.com/mvallim/java-fluent-validator) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/java-fluent-validator/tags).
+We use [GitHub](https://github.com/mvallim/transforming-responses) for versioning. For the versions available, see the [tags on this repository](https://github.com/mvallim/transforming-responses/tags).
 
 ## Authors
 
