@@ -10,7 +10,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-import org.junit.Rule;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -19,8 +21,20 @@ import com.jayway.restassured.path.json.JsonPath;
 // @formatter:off
 public class StubCpfResponseTransformerWithParamsTest {
 
-  @Rule
-  public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(8080).extensions(new StubCpfResponseTransformerWithParams()));
+  private static int PORT = 8082;
+  
+  @ClassRule
+  public static WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(PORT).extensions(new StubCpfResponseTransformerWithParams()));
+
+  @BeforeClass
+  public static void beforeClass() {
+    wireMockRule.start();
+  }
+
+  @AfterClass
+  public static void afterClass() {
+    wireMockRule.stop();
+  }
 
   @Test
   public void willReturnValidCnpj() {
@@ -32,6 +46,7 @@ public class StubCpfResponseTransformerWithParamsTest {
         .withTransformers("stub-cpf-with-params")));
 
     final JsonPath jsonPath = given()
+      .port(PORT)
       .queryParam("cpf", "83672069086")
       .contentType("application/json")
       .post("/validate")
@@ -56,6 +71,7 @@ public class StubCpfResponseTransformerWithParamsTest {
         .withTransformers("stub-cpf-with-params")));
 
     final JsonPath jsonPath = given()
+      .port(PORT)
       .queryParam("cpf", "01234567891")
       .contentType("application/json")
       .post("/validate")
@@ -80,6 +96,7 @@ public class StubCpfResponseTransformerWithParamsTest {
         .withTransformers("stub-cpf-with-params")));
 
     final JsonPath jsonPath = given()
+      .port(PORT)
       .queryParam("cpf", "")
       .contentType("application/json")
       .post("/validate")
@@ -104,6 +121,7 @@ public class StubCpfResponseTransformerWithParamsTest {
         .withTransformers("stub-cpf-with-params")));
 
     final JsonPath jsonPath = given()
+      .port(PORT)
       .queryParam("cpf", "11111111111")
       .contentType("application/json")
       .post("/validate")
@@ -128,6 +146,7 @@ public class StubCpfResponseTransformerWithParamsTest {
         .withTransformers("stub-cpf-with-params")));
 
     final JsonPath jsonPath = given()
+      .port(PORT)
       .contentType("application/json")
       .post("/validate")
       .then()
