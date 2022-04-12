@@ -1,20 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<groupId>br.com.wiremock.extension</groupId>
-	
+
 	<artifactId>transforming-responses</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-		
+
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<wiremock-jre8.version>2.33.1</wiremock-jre8.version>
 		<sonar.exclusions>**/test/**</sonar.exclusions>
+		<sonar.organization>mvallim</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<scm>
@@ -61,7 +63,7 @@
 				</includes>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -80,7 +82,6 @@
 				<configuration>
 					<excludes>
 						<exclude>**/test/**</exclude>
-						<exclude>**/ValidationExceptionAdvice**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
@@ -183,9 +184,9 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.github.tomakehurst</groupId>
-		    <artifactId>wiremock-jre8</artifactId>
-		    <version>${wiremock-jre8.version}</version>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock-jre8</artifactId>
+			<version>${wiremock-jre8.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.restassured</groupId>
