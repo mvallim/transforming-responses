@@ -1,4 +1,5 @@
-# transformer-responses
+# Transforming Responses
+
 Transforming responses wiremock
 
 ![Java CI with Maven](https://github.com/mvallim/transforming-responses/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
@@ -8,7 +9,9 @@ Transforming responses wiremock
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/transforming-responses/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.mvallim/transforming-responses)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-# Mock CPF API (Java)
+## CPF
+
+### Java
 
 ```java
 final WireMockRule wireMockRule = new WireMockRule(
@@ -23,7 +26,7 @@ wireMockRule.stubFor(
         
 ```
 
-# Mock CPF API (JSON)
+### JSON
 
 ```json
 {
@@ -49,7 +52,9 @@ wireMockRule.stubFor(
 }
 ```
 
-# Mock CNPJ API (Java)
+## CNPJ
+
+### Java
 
 ```java
 final WireMockRule wireMockRule = new WireMockRule(
@@ -63,7 +68,7 @@ wireMockRule.stubFor(post(urlPathMatching("/validate")).withQueryParam("cnpj", m
         
 ```
 
-# Mock CNPJ API (JSON)
+### JSON
 
 ```json
 {
