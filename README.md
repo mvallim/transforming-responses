@@ -31,12 +31,19 @@ wireMockRule.stubFor(
     "method": "POST",
     "urlPath": "/validate",
     "queryParameters": {
-        "cpf": {
-            "matches": "^.*$"
-        }
+      "cpf": {
+        "matches": "^.*$"
+      }
+    },
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json",
+        "caseInsensitive": true
+      }
     }
   },
   "response": {
+    "status": 200,
     "transformers": ["stub-cpf-with-params"]
   }
 }
@@ -64,12 +71,19 @@ wireMockRule.stubFor(post(urlPathMatching("/validate")).withQueryParam("cnpj", m
     "method": "POST",
     "urlPath": "/validate",
     "queryParameters": {
-        "cnpj": {
-            "matches": "^.*$"
-        }
+      "cnpj": {
+        "matches": "^.*$"
+      }
+    },
+    "headers": {
+      "Content-Type": {
+        "equalTo": "application/json",
+        "caseInsensitive": true
+      }
     }
   },
   "response": {
+    "status": 200,
     "transformers": ["stub-cnpj-with-params"]
   }
 }
