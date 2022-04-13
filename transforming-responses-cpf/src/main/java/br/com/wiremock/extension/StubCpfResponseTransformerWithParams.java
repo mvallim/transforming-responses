@@ -1,8 +1,8 @@
 package br.com.wiremock.extension;
 
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.extension.Parameters;
@@ -61,50 +61,18 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
       return false;
     }
 
-    char digito10;
-    char digito11;
-    int soma;
-    int resto;
-    int valor;
-    int peso;
+    final int[] array = cpf.chars().map(c -> c - 48).toArray();
 
-    try {
-      soma = 0;
-      peso = 10;
+    final int soma10 = IntStream.range(0, 9).map(i -> array[i] * (10 - i)).sum();
+    final int soma11 = IntStream.range(0, 10).map(i -> array[i] * (11 - i)).sum();
 
-      for (int i = 0; i < 9; i++) {
-        valor = cpf.charAt(i) - 48;
-        soma = soma + valor * peso;
-        peso = peso - 1;
-      }
+    final int resto10 = soma10 * 10 % 11;
+    final int resto11 = soma11 * 10 % 11;
 
-      resto = 11 - soma % 11;
-      if (resto == 10 || resto == 11) {
-        digito10 = '0';
-      } else {
-        digito10 = (char) (resto + 48);
-      }
+    final int digito10 = resto10 == 10 ? 0 : resto10;
+    final int digito11 = resto11 == 10 ? 0 : resto11;
 
-      soma = 0;
-      peso = 11;
-      for (int i = 0; i < 10; i++) {
-        valor = cpf.charAt(i) - 48;
-        soma = soma + valor * peso;
-        peso = peso - 1;
-      }
-
-      resto = 11 - soma % 11;
-      if (resto == 10 || resto == 11) {
-        digito11 = '0';
-      } else {
-        digito11 = (char) (resto + 48);
-      }
-
-      return digito10 == cpf.charAt(9) && digito11 == cpf.charAt(10);
-
-    } catch (final InputMismatchException erro) {
-      return false;
-    }
+    return digito10 == array[9] && digito11 == array[10];
 
   }
 

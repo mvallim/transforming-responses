@@ -1,8 +1,9 @@
 package br.com.wiremock.extension;
 
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.InputMismatchException;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.extension.Parameters;
@@ -61,57 +62,23 @@ public final class StubCnpjResponseTransformerWithParams extends ResponseTransfo
       return false;
     }
 
-    char digito13;
-    char digito14;
-    int resto;
-    int soma;
-    int value;
-    int peso;
+    final int[] array = cnpj.chars().map(c -> c - 48).toArray();
 
-    try {
-      soma = 0;
-      peso = 2;
-      for (int i = 11; i >= 0; i--) {
-        value = cnpj.charAt(i) - 48;
-        soma = soma + value * peso;
-        peso = peso + 1;
-        if (peso == 10) {
-          peso = 2;
-        }
-      }
+    final int soma13 = IntStream.range(0, 12).boxed().sorted(Collections.reverseOrder()).map(i -> array[i] * weight(13 - i)).reduce(0, (a, b) -> a + b);
+    final int soma14 = IntStream.range(0, 13).boxed().sorted(Collections.reverseOrder()).map(i -> array[i] * weight(14 - i)).reduce(0, (a, b) -> a + b);
 
-      resto = soma % 11;
+    final int resto13 = soma13 * 10 % 11;
+    final int resto14 = soma14 * 10 % 11;
 
-      if (resto == 0 || resto == 1) {
-        digito13 = '0';
-      } else {
-        digito13 = (char) (11 - resto + 48);
-      }
+    final int digito13 = resto13 == 10 ? 0 : resto13;
+    final int digito14 = resto14 == 10 ? 0 : resto14;
 
-      soma = 0;
-      peso = 2;
-      for (int i = 12; i >= 0; i--) {
-        value = cnpj.charAt(i) - 48;
-        soma = soma + value * peso;
-        peso = peso + 1;
-        if (peso == 10) {
-          peso = 2;
-        }
-      }
+    return digito13 == array[12] && digito14 == array[13];
 
-      resto = soma % 11;
-      if (resto == 0 || resto == 1) {
-        digito14 = '0';
-      } else {
-        digito14 = (char) (11 - resto + 48);
-      }
+  }
 
-      return digito13 == cnpj.charAt(12) && digito14 == cnpj.charAt(13);
-
-    } catch (final InputMismatchException erro) {
-      return false;
-    }
-
+  private static int weight(final int value) {
+    return value >= 10 ? value - 8 : value;
   }
 
 }
