@@ -61,6 +61,10 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
       return false;
     }
 
+    if (cpf.chars().noneMatch(Character::isDigit)) {
+      return false;
+    }
+
     final int[] array = cpf.chars().map(c -> c - 48).toArray();
 
     final int soma10 = IntStream.range(0, 9).map(i -> array[i] * (10 - i)).sum();

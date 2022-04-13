@@ -137,6 +137,31 @@ public class StubCnpjResponseTransformerWithParamsTest {
   }
 
   @Test
+  public void willReturnInvalidCnpjWhenIsAlpha() {
+    wireMockRule.stubFor(
+      post(urlPathMatching("/validate")).withQueryParam("cnpj", matching("^.*$"))
+      .willReturn(aResponse()
+        .withStatus(200)
+        .withHeader("content-type", "application/json")
+        .withTransformers("stub-cnpj-with-params")));
+
+    final JsonPath jsonPath = given()
+      .port(PORT)
+      .queryParam("cnpj", "abcdefghijklmn")
+      .contentType("application/json")
+      .post("/validate")
+      .then()
+      .log().all()
+      .statusCode(404)
+      .extract()
+      .jsonPath();
+
+    assertThat(jsonPath.getString("code"), is("404"));
+    assertThat(jsonPath.getString("message"), is("CNPJ inválido"));
+    assertThat(jsonPath.getString("value"), is("abcdefghijklmn"));
+  }
+
+  @Test
   public void willReturnInvalidCnpjWhenIsNull() {
     wireMockRule.stubFor(
       post(urlPathMatching("/validate"))

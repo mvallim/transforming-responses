@@ -22,7 +22,7 @@ import com.jayway.restassured.path.json.JsonPath;
 public class StubCpfResponseTransformerWithParamsTest {
 
   private static int PORT = 8082;
-  
+
   @ClassRule
   public static WireMockRule wireMockRule = new WireMockRule(wireMockConfig().port(PORT).extensions(new StubCpfResponseTransformerWithParams()));
 
@@ -134,6 +134,31 @@ public class StubCpfResponseTransformerWithParamsTest {
     assertThat(jsonPath.getString("code"), is("404"));
     assertThat(jsonPath.getString("message"), is("CPF inválido"));
     assertThat(jsonPath.getString("value"), is("11111111111"));
+  }
+
+  @Test
+  public void willReturnInvalidCpfWhenIsAlpha() {
+    wireMockRule.stubFor(
+      post(urlPathMatching("/validate")).withQueryParam("cpf", matching("^.*$"))
+      .willReturn(aResponse()
+        .withStatus(200)
+        .withHeader("content-type", "application/json")
+        .withTransformers("stub-cpf-with-params")));
+
+    final JsonPath jsonPath = given()
+      .port(PORT)
+      .queryParam("cpf", "abcdefghijk")
+      .contentType("application/json")
+      .post("/validate")
+      .then()
+      .log().all()
+      .statusCode(404)
+      .extract()
+      .jsonPath();
+
+    assertThat(jsonPath.getString("code"), is("404"));
+    assertThat(jsonPath.getString("message"), is("CPF inválido"));
+    assertThat(jsonPath.getString("value"), is("abcdefghijk"));
   }
 
   @Test

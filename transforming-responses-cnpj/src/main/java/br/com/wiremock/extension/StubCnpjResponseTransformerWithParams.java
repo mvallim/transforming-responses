@@ -62,6 +62,10 @@ public final class StubCnpjResponseTransformerWithParams extends ResponseTransfo
       return false;
     }
 
+    if (cnpj.chars().noneMatch(Character::isDigit)) {
+      return false;
+    }
+
     final int[] array = cnpj.chars().map(c -> c - 48).toArray();
 
     final int soma13 = IntStream.range(0, 12).boxed().sorted(Collections.reverseOrder()).map(i -> array[i] * weight(13 - i)).reduce(0, (a, b) -> a + b);
