@@ -100,7 +100,7 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
         digito11 = (char) (resto + 48);
       }
 
-      return digito10 == cpf.charAt(9) && digito11 == cpf.charAt(10) ? true : false;
+      return digito10 == cpf.charAt(9) && digito11 == cpf.charAt(10);
 
     } catch (final InputMismatchException erro) {
       return false;
