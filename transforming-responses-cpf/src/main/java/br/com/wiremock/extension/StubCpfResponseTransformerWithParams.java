@@ -79,7 +79,6 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
       }
 
       resto = 11 - soma % 11;
-
       if (resto == 10 || resto == 11) {
         digito10 = '0';
       } else {
@@ -101,11 +100,8 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
         digito11 = (char) (resto + 48);
       }
 
-      if (digito10 == cpf.charAt(9) && digito11 == cpf.charAt(10)) {
-        return true;
-      } else {
-        return false;
-      }
+      return digito10 == cpf.charAt(9) && digito11 == cpf.charAt(10) ? true : false;
+
     } catch (final InputMismatchException erro) {
       return false;
     }
