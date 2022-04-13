@@ -106,11 +106,8 @@ public final class StubCnpjResponseTransformerWithParams extends ResponseTransfo
         digito14 = (char) (11 - resto + 48);
       }
 
-      if (digito13 == cnpj.charAt(12) && digito14 == cnpj.charAt(13)) {
-        return true;
-      } else {
-        return false;
-      }
+      return digito13 == cnpj.charAt(12) && digito14 == cnpj.charAt(13) ? true : false;
+
     } catch (final InputMismatchException erro) {
       return false;
     }
