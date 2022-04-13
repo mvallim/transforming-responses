@@ -29,6 +29,11 @@ public final class StubCpfResponseTransformerWithParams extends ResponseTransfor
   }
 
   @Override
+  public boolean applyGlobally() {
+    return false;
+  }
+
+  @Override
   public String getName() {
     return "stub-cpf-with-params";
   }

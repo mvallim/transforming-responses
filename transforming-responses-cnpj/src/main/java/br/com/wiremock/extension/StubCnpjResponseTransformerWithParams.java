@@ -29,6 +29,11 @@ public final class StubCnpjResponseTransformerWithParams extends ResponseTransfo
   }
 
   @Override
+  public boolean applyGlobally() {
+    return false;
+  }
+
+  @Override
   public String getName() {
     return "stub-cnpj-with-params";
   }
